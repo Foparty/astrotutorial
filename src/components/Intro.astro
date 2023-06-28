@@ -1,0 +1,202 @@
+---
+import paint from '/paint.png';
+import portrait from '/main-portrait.jpg';
+---
+
+<div class='wrapper'>
+	<h1>Enter Hua's Doodle-Dazzled <span>Digital Universe!</span></h1>
+	<div class='images-container'>
+		<svg class='line'>
+			<defs>
+				<linearGradient id='gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
+					<stop offset='0%' style={{ stopColor: '#DC3A2B', stopOpacity: 1 }}
+					></stop>
+					<stop offset='100%' style={{ stopColor: '#E18510', stopOpacity: 1 }}
+					></stop>
+				</linearGradient>
+			</defs>
+			<path class='path' fill='none' stroke='url(#gradient)' stroke-width='4'
+			></path>
+		</svg>
+		<p class='paragraph'>
+			You've stumbled upon <span>Hua's</span> little corner of the internet, where
+			creativity runs rampant and normal is just a setting on a washing machine.<br
+			/>
+			<br />
+			Stick around, explore the digital masterpieces, and enjoy the occasional artistic
+			shenanigans. It's more fun than you'd think!
+			<br />
+			<br />
+			Delight in the unpredictable artistic shenanigans that burst forth from the
+			canvas of this digital universe. Here, every visit is an adventure, every glance
+			an exploration. Dive in, the pixels are warm!
+		</p>
+	</div>
+	<div class='stats'>
+		<div class='stat'>
+			<h2>Art Post</h2>
+			<p class='art'>85</p>
+		</div>
+		<div class='stat'>
+			<h2>YouTube</h2>
+			<p class='youtube'>1.2m</p>
+		</div>
+		<div class='stat'>
+			<h2>Reviews</h2>
+			<p class='reviews'>50</p>
+		</div>
+	</div>
+	<div class='img-container'>
+		<img class='port' src={portrait} alt='' />
+		<img class='brush' src={paint} alt='' />
+	</div>
+</div>
+<div class='divider'></div>
+
+<style>
+	.wrapper {
+		position: relative;
+	}
+	h1 {
+		font-weight: 100;
+		max-width: 37.5rem;
+		margin: 0 auto;
+		/* text-align: center; */
+	}
+	span {
+		font-weight: 600;
+	}
+	.images-container {
+		margin: 2rem 0;
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.images-container p {
+		padding: 0 0.8rem;
+		line-height: 1.1;
+		font-weight: 200;
+	}
+	.images-container span {
+		color: firebrick;
+	}
+
+	.line {
+		position: absolute;
+		width: 100%;
+		max-width: 37.5rem;
+		/* height: 100%; */
+		overflow: visible;
+	}
+	.stats {
+		display: flex;
+		gap: 2rem;
+		margin-top: 2rem;
+		justify-content: center;
+	}
+	.stat {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.paragraph {
+		max-width: 37.5rem;
+	}
+	.stat h2 {
+		font-weight: 200;
+	}
+	.stat p {
+		font-size: 2.4rem;
+		font-weight: 900;
+	}
+
+	.img-container {
+		position: relative;
+		margin: 3rem auto;
+		width: 100%;
+		text-align: center;
+	}
+	.port {
+		width: 25rem;
+		height: auto;
+		aspect-ratio: 3 / 4;
+		border-radius: 0.8rem;
+		object-fit: cover;
+		object-position: center;
+	}
+	.brush {
+		position: absolute;
+		width: 16rem;
+		/* height: 100%; */
+		z-index: 40;
+		bottom: 0;
+		left: 50%;
+		transform: translate(-50%, 5rem);
+	}
+
+	.path {
+		animation: draw 1s forwards 1s ease-out;
+	}
+
+	.divider {
+		width: 100%;
+		height: 0.6rem;
+		background: #f2f2f2;
+	}
+
+	@keyframes draw {
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+	@media (width> 45rem) {
+		h1 {
+			text-align: center;
+		}
+	}
+</style>
+
+<script>
+	function updatePath() {
+		const textMain = document.querySelector('.paragraph') as HTMLElement;
+		const path = document.querySelector('.path') as SVGPathElement;
+
+		if (textMain && path) {
+			path.setAttribute(
+				'd',
+				`M0,0 V${textMain.offsetHeight} H${textMain.offsetWidth} v${
+					textMain.offsetHeight / 2
+				}`
+			);
+		}
+		const pathLenght = path.getTotalLength();
+		path.style.strokeDasharray = pathLenght.toString();
+		path.style.strokeDashoffset = pathLenght.toString();
+	}
+
+	function incrementCounter(
+		selector: string,
+		current: number,
+		target: number,
+		duration: number,
+		letter: string = ''
+	) {
+		let counter = document.querySelector(selector);
+		let stepTime = Math.abs(Math.floor(duration / target));
+		if (current < target && counter) {
+			current++;
+			counter.innerText = current.toString() + letter;
+			setTimeout(
+				() => incrementCounter(selector, current, target, duration, letter),
+				stepTime
+			);
+		}
+	}
+	incrementCounter('.art', 0, 85, 1000);
+	incrementCounter('.youtube', 0, 328, 1000, 'k');
+	incrementCounter('.reviews', 0, 250, 1000);
+
+	window.addEventListener('DOMContentLoaded', updatePath);
+	window.addEventListener('resize', updatePath);
+</script>
